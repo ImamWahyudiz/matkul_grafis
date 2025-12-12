@@ -32,8 +32,8 @@ class OpenGLUtils(object):
         linkSuccess = glGetProgramiv(programRef, GL_LINK_STATUS)
 
         if not linkSuccess:
-            errorMessage = glGetProgramInfoLog(programRef)
-            glDeleteProgram(programRef)
+            errorMessage = glGetShaderInfoLog(programRef)
+            gDeleteProgram(programRef)
             errorMessage = '\n'+errorMessage.decode('utf-8')
             raise Exception(errorMessage)
 
