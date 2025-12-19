@@ -1,43 +1,66 @@
+import numpy
+from numpy.core.fromnumeric import var
 from OpenGL.GL import *
-import numpy as np 
 
+
+#storing the array data in the vertex buffer and
+# associating the vertex buffer to a shader variable in a given program
 class Attribute(object):
     def __init__(self, dataType, data):
+        #type of elements in data array
+        #int, float, vec2, vec3, vec4
         self.dataType = dataType
+
+        #array of data to be stored in buffer
         self.data = data
-        # membuat id buffer 
+
+        #reference of available buffer from GPU 
         self.bufferRef = glGenBuffers(1)
+
+        #upload data immediately
         self.uploadData()
 
+
+    #upload this data to a GPU buffer
     def uploadData(self):
-        # ubah list menjadi numpy array
-        # ubah ke bentuk 32 bit
-        data = np.array(self.data).astype(np.float32)
-        # aktifkan buffer 
+        #convert data to numpy array format
+        #convert numbers to 32 bit floats
+        data = numpy.array(self.data).astype(numpy.float32)
+
+        #select buffer used by the following functions
         glBindBuffer(GL_ARRAY_BUFFER, self.bufferRef)
-        # kirim data ke GPU
-        # meratakan array menjadi 1 dimensi
-        # GL_STATIC_DRAW memberi informasi data tidak sering berubah
+
+        #store data in currently bound buffer
         glBufferData(GL_ARRAY_BUFFER, data.ravel(), GL_STATIC_DRAW)
 
-    def associateVariable(self, programRef, variabelName):
-        # mencari lokasi variabel di shader berdasar namanya
-        variabelRef = glGetAttribLocation(programRef, variabelName)
-        if variabelRef == -1:
-            return 
-        # mengaktifkan buffer
+    
+    
+    #associate variable in program with this buffer
+    def associateVariable(self, programRef, variableName):
+        #get reference for program variable with given name 
+        variableRef = glGetAttribLocation(programRef, variableName)
+
+        #if the program does not reference the variable, then exit
+        if variableRef == -1:
+            return
+        
+        #select buffer used by the following funtions
         glBindBuffer(GL_ARRAY_BUFFER, self.bufferRef)
-        if self.dataType == 'int':
-            glVertexAttribPointer(variabelRef, 1, GL_INT, False, 0, None)
-        elif self.dataType == 'float':
-            glVertexAttribPointer(variabelRef, 1, GL_FLOAT, False, 0, None)
-        elif self.dataType == 'vec2':
-            glVertexAttribPointer(variabelRef, 2, GL_FLOAT, False, 0, None)
-        elif self.dataType == 'vec3':
-            glVertexAttribPointer(variabelRef, 3, GL_FLOAT, False, 0, None)
-        elif self.dataType == 'vec4':
-            glVertexAttribPointer(variabelRef, 4, GL_FLOAT, False, 0, None)
+
+        #specify how data will be read from the currently
+        #bound buffer into the specified variable
+        if self.dataType == "int":
+            glVertexAttribPointer(variableRef, 1, GL_INT, False, 0, None)
+        elif self.dataType == "float":
+            glVertexAttribPointer(variableRef, 1, GL_FLOAT, False, 0, None)
+        elif self.dataType == "vec2":
+            glVertexAttribPointer(variableRef, 2, GL_FLOAT, False, 0, None)
+        elif self.dataType == "vec3":
+            glVertexAttribPointer(variableRef, 3, GL_FLOAT, False, 0, None)
+        elif self.dataType == "vec4":
+            glVertexAttribPointer(variableRef, 4, GL_FLOAT, False, 0, None)
         else:
-            raise Exception("Attribute "+variabelName+" has unknown type "+self.dataType)
-        # mengaktifkan tempat di GPU agar data bisa mengalir ke shader saat proses rendering  
-        glEnableVertexAttribArray(variabelRef)
+            raise Exception("Attribution "+ variableName + " has unkown type " + self.dataType)
+        
+        #indicate that data will be streamed to this variable
+        glEnableVertexAttribArray(variableRef)

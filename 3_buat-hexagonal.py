@@ -18,8 +18,7 @@ class Test(Base):
         fsCode = """
         out vec4 fragColor;
         void main(){
-           fragColor = vec4(0.0, 1.0, 0.0, 1.0);
-
+            fragColor = vec4(1.0, 1.0, 0.0, 1.0);
         }
         """
 
@@ -32,10 +31,9 @@ class Test(Base):
         glBindVertexArray(vaoRef)
 
         positionData = [ 
-            [0.0, 0.9, 0.0],   
-            [0.5, 0.25, 0.0],   # titik kanan    
-            [0.0, -0.9, 0.0],  # titik bawah
-            [-0.5, 0.25, 0.0]   # titik kiri
+            [ 0.8, 0.0, 0.0], [ 0.4, 0.6, 0.0],
+            [-0.4, 0.6, 0.0], [-0.8, 0.0,0.0],
+            [-0.4, -0.6, 0.0], [0.4,-0.6, 0.0] 
         ]
 
 
@@ -55,6 +53,8 @@ class Test(Base):
         # GL_TRIANGLES : segitiga per tiga titik
         # GL_TRIANGLE_FAN : segitiga menyebar
 
-        glDrawArrays(GL_TRIANGLE_FAN, 0, self.vertexCount)
+        glDrawArrays(GL_LINE_LOOP, 0, self.vertexCount)
 
 Test().run()
+
+

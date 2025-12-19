@@ -1,71 +1,136 @@
-# Impor pustaka numpy untuk operasi matriks
-import numpy
-# Impor fungsi trigonometri dan konstanta pi dari pustaka math
-from math import sin, cos, tan, pi
+from math import cos, pi, sin, tan
+from turtle import right
 
-# Definisikan kelas Matrix untuk operasi matriks dalam grafika komputer
+import numpy
+from numpy import angle, cross, divide, rint, subtract
+from numpy.linalg import norm
+
+
 class Matrix(object):
-    
-    # Metode statis untuk membuat matriks identitas 4x4
     @staticmethod
     def makeIdentity():
-        # Mengembalikan matriks identitas 4x4 sebagai array numpy dengan tipe data float
-        return numpy.array( [[1, 0, 0, 0],[0, 1, 0, 0],[0, 0, 1, 0],[0, 0, 0, 1]] ).astype(float)
-        
-    # Metode statis untuk membuat matriks translasi (pergeseran)
+        return numpy.array(
+            [
+                [1, 0, 0, 0],
+                [0, 1, 0, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 1]
+            ]
+        ).astype(float)
+    
     @staticmethod
     def makeTranslation(x, y, z):
-        # Mengembalikan matriks translasi 4x4 yang menggeser objek sejauh x, y, dan z
-        return numpy.array([[1, 0, 0, x],[0, 1, 0, y],[0, 0, 1, z],[0, 0, 0, 1]]).astype(float)
-        
-    # Metode statis untuk membuat matriks rotasi terhadap sumbu X
+        return numpy.array(
+            [
+                [1, 0, 0, x],
+                [0, 1, 0, y],
+                [0, 0, 1, z],
+                [0, 0, 0, 1]
+            ]
+        ).astype(float)
+    
     @staticmethod
     def makeRotationX(angle):
-        # Hitung nilai kosinus dari sudut rotasi
         c = cos(angle)
-        # Hitung nilai sinus dari sudut rotasi
         s = sin(angle)
-        # Mengembalikan matriks rotasi 4x4 terhadap sumbu X
-        return numpy.array([[1, 0, 0, 0],[0, c, -s, 0],[0, s, c, 0],[0, 0, 0, 1]]).astype(float)
-        
-    # Metode statis untuk membuat matriks rotasi terhadap sumbu Y
+        return numpy.array(
+            [ 
+                [1, 0, 0, 0],
+                [0, c, -s, 0],
+                [0, s, c, 0],
+                [0, 0, 0, 1]
+            ]
+        ).astype(float)
+    
     @staticmethod
     def makeRotationY(angle):
-        # Hitung nilai kosinus dari sudut rotasi
         c = cos(angle)
-        # Hitung nilai sinus dari sudut rotasi
         s = sin(angle)
-        # Mengembalikan matriks rotasi 4x4 terhadap sumbu Y
-        return numpy.array([[ c, 0, s, 0],[ 0, 1, 0, 0],[-s, 0, c, 0],[ 0, 0, 0, 1]]).astype(float)
-        
-    # Metode statis untuk membuat matriks rotasi terhadap sumbu Z
+        return numpy.array(
+            [
+                [c, 0, s, 0],
+                [0, 1, 0, 0],
+                [-s, 0, c, 0],
+                [0, 0, 0, 1]
+            ]
+        ).astype(float)
+
+
     @staticmethod
     def makeRotationZ(angle):
-        # Hitung nilai kosinus dari sudut rotasi
         c = cos(angle)
-        # Hitung nilai sinus dari sudut rotasi
         s = sin(angle)
-        # Mengembalikan matriks rotasi 4x4 terhadap sumbu Z
-        return numpy.array([[c, -s, 0, 0],[s, c, 0, 0],[0, 0, 1, 0],[0, 0, 0, 1]]).astype(float)
-        
-    # Metode statis untuk membuat matriks skala (penskalaan)
+        return numpy.array(
+            [
+                [c, -s, 0, 0],
+                [s, c, 0, 0],
+                [0, 0, 1, 0],
+                [0, 0, 0, 1]
+            ]
+        ).astype(float)
+
+
     @staticmethod
     def makeScale(s):
-        # Mengembalikan matriks skala 4x4 yang mengubah ukuran objek dengan faktor s
-        return numpy.array([[s, 0, 0, 0],[0, s, 0, 0],[0, 0, s, 0],[0, 0, 0, 1]]).astype(float)
-        
-    # Metode statis untuk membuat matriks proyeksi perspektif
+        return numpy.array(
+            [
+                [s, 0, 0, 0],
+                [0, s, 0, 0],
+                [0, 0, s, 0],
+                [0, 0, 0, 1]
+            ]
+        ).astype(float)
+
     @staticmethod
-    def makePerspective(angleOfView=60,aspectRatio=1, near=0.1, far=1000):
-        # Konversi sudut pandang dari derajat ke radian
-        a = angleOfView * pi/180.0
-        # Hitung jarak dari kamera ke bidang proyeksi
-        d = 1.0 / tan(a/2)
-        # Simpan rasio aspek
+    def makePerspective(angleOfView = 60, aspectRatio = 1, near = 0.1, far = 1000):
+        a = angleOfView * pi / 180.0
+        d = 1.0 / tan(a*0.5)
         r = aspectRatio
-        # Hitung nilai untuk transformasi kedalaman (z)
-        b = (far + near) / (near - far)
-        # Hitung nilai lain untuk transformasi kedalaman (z)
-        c = 2*far*near / (near - far)
-        # Mengembalikan matriks proyeksi perspektif 4x4
-        return numpy.array([[d/r, 0, 0, 0],[0,d, 0, 0],[0,0, b, c],[0,0, -1, 0]]).astype(float)
+        b = (far+near) / (near - far)
+        c = 2 * far * near / (near - far)
+        return numpy.array(
+            [
+                [d/r, 0, 0, 0],
+                [0, d, 0, 0],
+                [0, 0, b, c],
+                [0, 0, -1, 0]
+            ]
+        ).astype(float)
+
+    @staticmethod
+    def makeLookAt(position, target):
+        worldUp = [0,1,0]
+        forward = subtract(target, position)
+        right = cross(forward, worldUp)
+
+        #if forward and worldup vectors are parallel right vector is zero
+        #fix by perturbing worldUp vector a bit
+        if norm(right) < 0.001:
+            offset = numpy.array([0.001, 0, 0])
+            right = cross(forward, worldUp+offset)
+
+        up = cross(right, forward)
+        #all vectors should have length 1
+        forward = divide(forward, norm(forward))
+        right = divide(right, norm(right))
+        up = divide(up, norm(up))
+
+        return numpy.array([
+            [right[0], up[0], -forward[0], position[0]],
+            [right[1], up[1], -forward[1], position[1]],
+            [right[2], up[2], -forward[2], position[2]],
+            [0, 0, 0, 1]
+
+        ])
+    
+    @staticmethod
+    def makeOrthographic(left=-1, right=1, bottom=-1, top=1, near=-1, far=1):
+        return numpy.array(
+            [
+                [2 / (right-left), 0, 0, -(right+left)/(right-left)],
+                [0, 2 / (top-bottom), 0, -(top+bottom)/(top-bottom)],
+                [0, 0, -2 / (far-near), -(far+near)/(far-near)],
+                [0, 0, 0, 1]
+            ]
+        )
+    

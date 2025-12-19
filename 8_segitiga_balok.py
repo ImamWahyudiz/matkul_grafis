@@ -13,9 +13,9 @@ class Test(Base):
         print("Menginisialisasi program untuk menampilkan segitiga dan kotak sederhana...")
         self.renderer = Renderer()
         self.scene = Scene()
-        self.scene.setPosition([0.0, 0.0, 0.0]) 
+        self.scene.setPosition([0.0, 4.0, 0]) 
         self.camera = Camera( aspectRatio=800/600 )
-        self.camera.setPosition( [0, 0, 4] ) # Kamera di [0,0,4] melihat ke origin
+        self.camera.setPosition( [0, 4, 4] ) # Kamera di [0,0,4] melihat ke origin
 
         # --- OBJEK 1: SEGITIGA ---
         # Anda bisa mengubah koordinat X, Y, Z dari setiap verteks di bawah ini.
@@ -76,11 +76,12 @@ class Test(Base):
         # Coba aktifkan baris di bawah ini satu per satu untuk melihat efeknya:
         # self.triangleMesh.rotateX(np.pi / 4) # Memutar segitiga
         # self.boxMesh.scale(0.7)             # Memperkecil kotak
+        # self.boxMesh.rotateX(np.pi / 4) 
 
     def update(self):
         # Tidak ada rotasi otomatis di sini, balok akan diam.
-        # self.boxMesh.rotateY( 0.0514 )
-        # self.boxMesh.rotateX( 0.0337 ) 
+        self.boxMesh.rotateY( 0.0514 )
+        self.boxMesh.rotateX( 0.0337 ) 
         # Merender scene dari sudut pandang kamera
         self.renderer.render( self.scene, self.camera)
 

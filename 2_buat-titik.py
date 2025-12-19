@@ -8,7 +8,7 @@ class Test(Base):
         vsCode = """
         void main()
         {
-            gl_Position = vec4(0.9, 0.9, 0.0, 1.0);
+            gl_Position = vec4(0.9, 0.9, 0, 1.0);
         }
         """
 
@@ -16,7 +16,7 @@ class Test(Base):
         out vec4 fragColor;
         void main()
         {
-            fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+            fragColor = vec4(0.902, 0, 0.969, 1.0);
         }
         """
 
@@ -25,7 +25,7 @@ class Test(Base):
         vaoRef = glGenVertexArrays(1)
         glBindVertexArray(vaoRef)
 
-        glPointSize(20)
+        glPointSize(40)
 
         OpenGLUtils.printSystemInfo()
 
