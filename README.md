@@ -27,9 +27,6 @@ python nama_file.py
 ---
 
 *Catatan: ini cuma repo pribadi buat belajar, jadi kodenya masih acak-acakan* 🙏
-# Baca Saya
-
-Program dikembangkan dari repo https://github.com/digitalprogrammer/PYOPENGL dengan beberapa modifikasi. Program ini dijalankan dengan menggunakan Python dengan modul utama PyOpenGL. Jadi pastikan sudah terinstall python di Laptop/Komputer kita.
 
 ## Depedency
 
