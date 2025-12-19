@@ -11,7 +11,7 @@ class Base(object):
         #initilize all pygame modules
         pygame.init()
         #indicate rendering details
-        displayFlags = pygame.DOUBLEBUF | pygame.OPENGL
+        displayFlags = pygame.DOUBLEBUF | pygame.OPENGL | pygame.RESIZABLE
         #initlize buffers to perform antialiasing
         pygame.display.gl_set_attribute(
             pygame.GL_MULTISAMPLEBUFFERS, 1)
