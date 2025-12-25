@@ -19,7 +19,7 @@ Program ini mendemonstrasikan teknik **Post-Processing** dalam grafis komputer, 
 ### 1. Scene Components
 
 #### Sky (Langit)
-```python
+```pythonflatpak install flathub com.obsproject.Studio.Plugin.DroidCam
 skyGeometry = SphereGeometry(radius=50)
 earthTexture = Texture("images/sky-earth.png")
 skyMaterial = TextureMaterial(earthTexture)
