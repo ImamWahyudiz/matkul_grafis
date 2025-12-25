@@ -18,7 +18,7 @@ Program ini mendemonstrasikan teknik **Post-Processing** dalam grafis komputer, 
 
 ### 1. Scene Components
 
-#### Sky (Langit)
+#### Sky (Langit)Utama
 ```pythonflatpak install flathub com.obsproject.Studio.Plugin.DroidCam
 skyGeometry = SphereGeometry(radius=50)
 earthTexture = Texture("images/sky-earth.png")
@@ -112,7 +112,7 @@ self.sphere.setPosition([0,1,0])
 
 ---
 
-## 📊 Detail Setiap Effect
+## 📊 Detail Setiap EffectUtama
 
 ### Effect 1: Bright Filter Effect
 

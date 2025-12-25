@@ -1,6 +1,7 @@
 import pygame
 import os
 from OpenGL.GL import *
+from PIL import Image
 
 
 class Texture(object):
@@ -42,18 +43,31 @@ class Texture(object):
             return
         
         try:
-            # Load image dengan pygame
+            # Try loading with pygame first
             self.surface = pygame.image.load(fileName)
             print(f"Successfully loaded texture: {fileName}")
         except pygame.error as e:
-            print(f"ERROR loading texture {fileName}: {e}")
-            print(f"Creating default texture...")
-            # Buat texture default
-            self.surface = pygame.Surface((64, 64))
-            for y in range(64):
-                for x in range(64):
-                    color = (255, 0, 255) if (x//8 + y//8) % 2 == 0 else (200, 0, 200)
-                    self.surface.set_at((x, y), color)
+            # If pygame fails, try PIL (Pillow) as fallback
+            try:
+                print(f"Pygame failed, trying PIL for {fileName}...")
+                pil_image = Image.open(fileName)
+                # Convert to RGBA mode if not already
+                if pil_image.mode != 'RGBA':
+                    pil_image = pil_image.convert('RGBA')
+                # Convert PIL image to pygame surface
+                image_data = pil_image.tobytes()
+                self.surface = pygame.image.fromstring(image_data, pil_image.size, 'RGBA')
+                print(f"Successfully loaded texture with PIL: {fileName}")
+            except Exception as pil_error:
+                print(f"ERROR loading texture {fileName}: {e}")
+                print(f"PIL also failed: {pil_error}")
+                print(f"Creating default texture...")
+                # Buat texture default
+                self.surface = pygame.Surface((64, 64))
+                for y in range(64):
+                    for x in range(64):
+                        color = (255, 0, 255) if (x//8 + y//8) % 2 == 0 else (200, 0, 200)
+                        self.surface.set_at((x, y), color)
 
 
     

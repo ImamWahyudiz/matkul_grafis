@@ -177,7 +177,7 @@ class Test(Base):
         self.postprocessor.addEffect(
             HorizontalBlurEffect(
                 textureSize=[800, 600],
-                blurRadius=50
+                blurRadius=30
             )
         )
         
@@ -201,7 +201,7 @@ class Test(Base):
         self.postprocessor.addEffect(
             VerticalBlurEffect(
                 textureSize=[800, 600],
-                blurRadius=50
+                blurRadius=30
             )
         )
         
