@@ -14,7 +14,7 @@ class Test(Base):
         uniform vec3 translation;
         void main()
         {
-        vec3 pos = position + translation;
+        vec3 pos = position + translation;pygame.error: File is not a Windows BMP file
         gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
         }
         """

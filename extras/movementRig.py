@@ -2,7 +2,7 @@ from core.object3D import Object3D
 
 
 class MovementRig(Object3D):
-    def __init__(self, unitsPerSecond=1, degreesPerSecond=60):
+    def __init__(self, unitsPerSecond=1, degreesPerSecond=60, mouseSensitivity=0.5):
         #initilize base object3d; controls movement and turn left/right
         super().__init__()
         #initialize attached object3d; controls look up/down
@@ -13,6 +13,10 @@ class MovementRig(Object3D):
         #control rate of movement
         self.unitsPerSecond = unitsPerSecond
         self.degreesPerSecond = degreesPerSecond
+        
+        #mouse control
+        self.mouseSensitivity = mouseSensitivity
+        self.mouseEnabled = True
 
         #custumizable key mappings
         # defaults: WASDRF (move), QE (turn), TG (look)
@@ -39,6 +43,7 @@ class MovementRig(Object3D):
         moveAmount = self.unitsPerSecond * deltaTime
         rotateAmount = self.degreesPerSecond * 3.1415926 * 0.0055555 * deltaTime
 
+        # Keyboard movement
         if inputObejct.isKeyPressed(self.KEY_MOVE_FORWARDS):
             self.translate(0, 0, -moveAmount)
         if inputObejct.isKeyPressed(self.KEY_MOVE_BACKWARDS):
@@ -52,6 +57,7 @@ class MovementRig(Object3D):
         if inputObejct.isKeyPressed(self.KEY_MOVE_DOWN):
             self.translate(0, -moveAmount, 0)
 
+        # Keyboard rotation
         if inputObejct.isKeyPressed(self.KEY_TURN_LEFT):
             self.rotateY(rotateAmount)
         if inputObejct.isKeyPressed(self.KEY_TURN_RIGHT):
@@ -61,6 +67,17 @@ class MovementRig(Object3D):
             self.lookAttachment.rotateX(rotateAmount)
         if inputObejct.isKeyPressed(self.KEY_LOOK_DOWN):
             self.lookAttachment.rotateX(-rotateAmount)
+
+        # Mouse rotation (if enabled and mouse button is pressed)
+        if self.mouseEnabled and hasattr(inputObejct, 'mouseButtonPressed'):
+            if inputObejct.mouseButtonPressed(1):  # Left mouse button
+                mouseDelta = inputObejct.getMouseDelta()
+                if mouseDelta is not None:
+                    dx, dy = mouseDelta
+                    # Rotate horizontally (yaw)
+                    self.rotateY(-dx * self.mouseSensitivity * 0.01)
+                    # Rotate vertically (pitch)
+                    self.lookAttachment.rotateX(-dy * self.mouseSensitivity * 0.01)
 
         
         

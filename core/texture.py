@@ -1,4 +1,5 @@
 import pygame
+import os
 from OpenGL.GL import *
 
 
@@ -28,7 +29,32 @@ class Texture(object):
         
     #load image from file
     def loadImage(self, fileName):
-        self.surface = pygame.image.load(fileName)
+        # Cek apakah file ada
+        if not os.path.exists(fileName):
+            print(f"WARNING: Texture file not found: {fileName}")
+            print(f"Creating default texture...")
+            # Buat texture default (checkerboard pattern)
+            self.surface = pygame.Surface((64, 64))
+            for y in range(64):
+                for x in range(64):
+                    color = (255, 255, 255) if (x//8 + y//8) % 2 == 0 else (200, 200, 200)
+                    self.surface.set_at((x, y), color)
+            return
+        
+        try:
+            # Load image dengan pygame
+            self.surface = pygame.image.load(fileName)
+            print(f"Successfully loaded texture: {fileName}")
+        except pygame.error as e:
+            print(f"ERROR loading texture {fileName}: {e}")
+            print(f"Creating default texture...")
+            # Buat texture default
+            self.surface = pygame.Surface((64, 64))
+            for y in range(64):
+                for x in range(64):
+                    color = (255, 0, 255) if (x//8 + y//8) % 2 == 0 else (200, 0, 200)
+                    self.surface.set_at((x, y), color)
+
 
     
     #set property values
